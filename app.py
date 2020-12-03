@@ -21,7 +21,9 @@ def get_main():
 				"content": post.content
 			}
 			newlist.append(answer)
-		return jsonify(newlist)
+		response = jsonify(newlist)
+		response.headers.add("Access-Control-Allow-Origin", "*")
+		return response
 	elif request.method == "POST":
 		mylist = []
 		search = request.get_json('search')
