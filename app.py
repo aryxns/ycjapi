@@ -10,9 +10,11 @@ DEBUG = True
 app = Flask(__name__)
 CORS(app, support_credentials=True, resources={r"/main":{"origins":"https://ycjobs.vercel.app"}})
 
-@app.route('/', methods=["GET", "POST", "OPTIONS"])
+@app.route('/main', methods=["GET", "POST", "OPTIONS"])
 def get_main():
-	if request.method == "GET":
+	if request.method == "OPTIONS":
+		_build_cors_prelight_response()
+	elif request.method == "GET":
 		newlist = []
 		for post in hn.jobs(limit=10):
 			answer = {
@@ -21,7 +23,7 @@ def get_main():
 				"content": post.content
 			}
 			newlist.append(answer)
-		return (jsonify(newlist))
+		return corsify_actual_response(jsonify(newlist))
 	elif request.method == "POST":
 		mylist = []
 		search = request.get_json('search')
@@ -34,7 +36,7 @@ def get_main():
 					"content" : post.content
 				}
 				mylist.append(result)
-		return (jsonify(mylist)
+		return _corsify_actual_response(jsonify(mylist))
 
 if __name__ == '__main__':
 	app.run()
