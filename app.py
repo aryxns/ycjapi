@@ -8,7 +8,7 @@ DEBUG = True
 
 # instantiate the app
 app = Flask(__name__)
-cors = CORS(app, resources={r"/"}:{"origins":"https://ycjobs.vercel.app/"})
+CORS(app, support_credentials=True, resources={r"/main":{"origins":"https://ycjobs.vercel.app"}})
 
 @app.route('/', methods=["GET", "POST", "OPTIONS"])
 def get_main():
