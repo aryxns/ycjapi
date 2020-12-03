@@ -8,7 +8,6 @@ DEBUG = True
 
 # instantiate the app
 app = Flask(__name__)
-CORS(app)
 
 @app.route('/main', methods=["GET", "POST", "OPTIONS"])
 def get_main():
