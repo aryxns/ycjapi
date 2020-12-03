@@ -8,14 +8,11 @@ DEBUG = True
 
 # instantiate the app
 app = Flask(__name__)
-cors = CORS(app, resources={r"/main"}:{"origins":"https://ycjobs.vercel.app/"})
+cors = CORS(app, resources={r"/"}:{"origins":"https://ycjobs.vercel.app/"})
 
-@app.route('/main', methods=["GET", "POST", "OPTIONS"])
+@app.route('/', methods=["GET", "POST", "OPTIONS"])
 def get_main():
-	if request.method == "OPTIONS":
-		return request.headers.add("Access-Control-Allow-Origin", "https://ycjobs.vercel.app/")
-	elif request.method == "GET":
-		request.headers.add("Access-Control-Allow-Origin", "https://ycjobs.vercel.app/")
+	if request.method == "GET":
 		newlist = []
 		for post in hn.jobs(limit=10):
 			answer = {
@@ -26,7 +23,6 @@ def get_main():
 			newlist.append(answer)
 		return (jsonify(newlist))
 	elif request.method == "POST":
-		request.headers.add("Access-Control-Allow-Origin", "https://ycjobs.vercel.app/")
 		mylist = []
 		search = request.get_json('search')
 		role = search['search']
